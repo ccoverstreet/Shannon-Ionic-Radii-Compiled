@@ -21,14 +21,14 @@ def key_mapping(key):
     if key == "": return ""
 
     mapping = {
-        "R": "From r^3 vs V plots",
-        "C": "Calculated from bond length - bond strength equations",
+        "R": "From r^3 vs V",
+        "C": "Calc. from len.-str. eq",
         "E": "Estimated",
         "?": "Doubtful",
         "*": "Most Reliable",
         "M": "From Metallic Oxides",
         "A": "Ahrens (1952) Ionic radius",
-        "P": "Pauling's (1960) Crystal Radius",
+        "P": "Paulings (1960) Crystal Radius",
     }
 
     out = ""
@@ -83,7 +83,7 @@ for i, c in enumerate(iterator):
 
 
 with open("compiled_shannon.csv", "w") as f:
-    f.write(f"# symbol, charge state, coordination, spin state, crystal radius [angstrom], ionic radius [angstrom], key\n")
+    f.write(f"symbol,charge,coord,spin,r_crystal [Å],r_ionic [Å],key\n")
     for row in out:
         f.write(",".join((str(x) for x in row)) + "\n")
 
