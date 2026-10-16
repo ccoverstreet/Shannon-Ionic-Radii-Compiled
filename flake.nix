@@ -11,7 +11,7 @@
     let 
       pkgs = nixpkgs.legacyPackages.${system};
       generatedProgram = pkgs.stdenv.mkDerivation {
-        pname = "shannonradiicli_built";
+        pname = "shannonradiicli";
         version = "0.1.0";
         src = self;
         nativeBuildInputs = [ pkgs.gnumake pkgs.python3 ];
@@ -21,14 +21,14 @@
           cd ..
           '';
         installPhase = ''
-          mkdir -p $out
-          cp cppsrc/shannonradiicli $out/
+          mkdir -p $out/bin
+          cp cppsrc/shannonradiicli $out/bin/
           '';
       };
     in
     {
-
       packages.default = generatedProgram;
+
       apps.default = {
         type = "app";
         program = "${self.packages.${system}.default}/bin/shannonradiicli";
