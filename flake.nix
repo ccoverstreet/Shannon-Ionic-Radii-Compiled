@@ -31,7 +31,7 @@
       packages.default = generatedProgram;
       apps.default = {
         type = "app";
-        program = "${self.packages.${system}.default}/shannonradiicli";
+        program = "${self.packages.${system}.default}/bin/shannonradiicli";
       };
 
     });
