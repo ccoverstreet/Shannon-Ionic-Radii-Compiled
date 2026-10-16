@@ -6,8 +6,18 @@
 #include <algorithm>
 #include "data.h"
 
+const char* HELPTEXT = "Shannon Ionic Radii CLI\n"
+"Usage:\n"
+"\tElements \tSpecify elements to select\n"
+"\t-h,--help\tPrints this help message\n"
+"\t--coord  \tFilter by coordination as roman numeral (ex. VI)\n"
+"\t--charge \tFilter by charge state (ex. 1) [integer\n"
+"\t--sort   \tSort output by a specified column. Values are\n"
+"\t         \tr_ionic, r_crystal, charge\n";
+
+
 void print_help() {
-	std::cout << "Help" << "\n";
+	std::cout << HELPTEXT << "\n";
 }
 
 void throw_exception(const char *msg) {
@@ -19,7 +29,7 @@ struct Filter {
 	const char *coord;
 	const char *charge;
 	const char *sort;
-
+	bool help;
 };
 
 void print_filt(const Filter &filt) {
@@ -32,10 +42,10 @@ void print_filt(const Filter &filt) {
 
 Filter parse_args(int argc, char *argv[]) {
 	int i = 1;
-	Filter filt = Filter{{}, "", "", ""};
-
-	while (i < argc) {
-		if (strcmp(argv[i], "--coord") == 0) {
+	Filter filt = Filter{{}, "", "", "", false}; while (i < argc) { if ((strcmp(argv[i], "--help") == 0) 
+				|| strcmp(argv[i], "-h") == 0) {
+			filt.help = true;
+		} else if (strcmp(argv[i], "--coord") == 0) {
 			if (i+1 >= argc) throw_exception("No argument provided for --coord");
 
 			filt.coord = argv[i+1];
@@ -65,8 +75,12 @@ int main(int argc, char *argv[]) {
 	if (argc == 1) { print_help(); }
 
 
-
 	Filter filt = parse_args(argc, argv);
+
+	if (filt.help) {
+		print_help();
+		return 0;
+	}
 
 	std::vector<RadiiEntry> sel_elems;
 
