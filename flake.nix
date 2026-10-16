@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "Shannon Ionic Radii CLI";
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";
@@ -10,35 +10,28 @@
   flake-utils.lib.eachDefaultSystem (system:
     let 
       pkgs = nixpkgs.legacyPackages.${system};
-      generatedScript = pkgs.stdenv.mkDerivation {
-        pname = "tester";
+      generatedProgram = pkgs.stdenv.mkDerivation {
+        pname = "shannonradiicli_built";
         version = "0.1.0";
         src = self;
         nativeBuildInputs = [ pkgs.gnumake pkgs.python3 ];
         buildPhase = ''
-          cd src
+          cd cppsrc
           make
           cd ..
           '';
         installPhase = ''
           mkdir -p $out
-          cp src/shannonradiicli.py $out/
+          cp cppsrc/shannonradiicli $out/
           '';
       };
     in
     {
 
-      packages.default = pkgs.writeShellApplication {
-        name = "shannonradiicli";
-        runtimeInputs = [pkgs.uv];
-        text = ''
-          exec uv run "${generatedScript}/shannonradiicli.py" "$@"
-          '';
-      };
-
+      packages.default = generatedProgram;
       apps.default = {
         type = "app";
-        program = "${self.packages.${system}.default}/bin/shannonradiicli";
+        program = "${self.packages.${system}.default}/shannonradiicli";
       };
 
     });
